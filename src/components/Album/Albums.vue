@@ -3,20 +3,19 @@
     <div class="album-txt">Albums</div>
     <div class="album-container">
       <template v-for="album in albums">
-        <div v-bind:key="album.id">
-          <div class="img-container">
-            <img @click="onAlbumClick(album)" :src="album.cover_medium">
-          </div>
-          <span class="album-caption">{{album.title}}</span>
-        </div>
+        <app-album v-bind:key="album.id" :album="album"></app-album>
       </template>
     </div>
   </div>
   <div v-else :style="{color: color}">No results found</div>
 </template>
 <script>
-import { searchEventBus } from "../main.js";
+import Album from "./Album.vue";
+import { searchEventBus } from "../../main.js";
 export default {
+  components: {
+    "app-album": Album
+  },
   data: function() {
     return {
       albums: [],
@@ -30,15 +29,12 @@ export default {
         artistId: artistId
       };
       return this.$http.post("http://localhost:5000/albums", data);
-    },
-    onAlbumClick(selectedAlbum) {
-      console.log(selectedAlbum);
     }
   },
   created() {
     searchEventBus.$on("artistClicked", data => {
-      console.log(data);
       this.selectedArtist = data;
+      this.artistName = this.selectedArtist.artist.name;
       this.fetchAlbumsList(this.selectedArtist.artist.id)
         .then(
           response => {
@@ -47,7 +43,6 @@ export default {
           error => {}
         )
         .then(albumsResponse => {
-          console.log(albumsResponse);
           this.albums = albumsResponse.data;
         });
     });
@@ -55,22 +50,10 @@ export default {
 };
 </script>
 <style scoped>
-.search-container {
-  text-align: center;
-}
-.search-result-txt {
-  color: white;
-  margin-top: 1rem;
-  font-size: 1.5rem;
-  border-bottom: 1px solid lightgray;
-}
 .album-txt {
   color: aqua;
   margin-top: 1rem;
   font-size: 1.5rem;
-}
-.search-items-txt {
-  margin-left: 10px;
 }
 .album-container {
   align-items: center;
@@ -79,26 +62,6 @@ export default {
   grid-row-gap: 10px;
   grid-column-gap: 5px;
   margin-top: 1rem;
-}
-.album-detail-container {
-  display: grid;
-  grid-template-columns: 250px auto;
-  grid-column-gap: 10px;
-  background: #2a2a2a;
-  font-size: 16px;
-  margin-top: 4rem;
-}
-.album-img-container {
-  margin-top: -3rem;
-}
-.album-caption {
-  display: block;
-  color: white;
-  font-size: 15px;
-  color: aqua;
-}
-.img-container:hover {
-  cursor: pointer;
 }
 @media only screen and (max-width: 576px) {
   .album-container {

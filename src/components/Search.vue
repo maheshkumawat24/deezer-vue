@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     onChange() {
+      console.log(process.env.ROOT_API );
       console.log(this.searchQuery);
       this.fetchArtists(this.searchQuery)
         .then(
