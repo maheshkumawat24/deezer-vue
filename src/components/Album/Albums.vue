@@ -1,9 +1,9 @@
 <template>
   <div v-if="albums.length>0">
-    <div class="album-txt">Albums</div>
+    <div class="album-txt">Albums({{albums.length}})</div>
     <div class="album-container">
-      <template v-for="album in albums">
-        <app-album v-bind:key="album.id" :album="album"></app-album>
+      <template v-for="(album,i) in albums">
+        <app-album v-bind:key="album.id" :album="album" :albumIndex="i"></app-album>
       </template>
     </div>
   </div>
@@ -58,30 +58,10 @@ export default {
 .album-container {
   align-items: center;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-row-gap: 10px;
-  grid-column-gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-row-gap: 20px;
+  grid-column-gap: 10px;
   margin-top: 1rem;
-}
-@media only screen and (max-width: 576px) {
-  .album-container {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-@media only screen and (min-width: 768px) {
-  .album-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media only screen and (min-width: 992px) {
-  .album-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@media only screen and (min-width: 1200px) {
-  .album-container {
-    grid-template-columns: repeat(4, 1fr);
-  }
 }
 </style>
 

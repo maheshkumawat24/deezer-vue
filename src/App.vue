@@ -32,24 +32,25 @@ export default {
       isArtistSelected: false,
       isAlbumClicked: false,
       artistName: ""
-    }
+    };
   },
   methods: {
     scrollToTrackTable() {
       var container = this.$el.querySelector("#trackContainer");
-      container.scrollIntoView({behavior: 'smooth'});
+      container.scrollIntoView({ behavior: "smooth" });
     }
   },
   created() {
     searchEventBus.$on("artistClicked", data => {
       this.isArtistSelected = true;
+      this.isAlbumClicked = false;
       this.artistName = data.artist.name;
     });
     albumEventBus.$on("albumClicked", data => {
       this.isAlbumClicked = true;
-      setTimeout(()=>{
+      setTimeout(() => {
         this.scrollToTrackTable();
-      },100);
+      }, 100);
     });
   }
 };

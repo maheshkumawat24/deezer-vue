@@ -3,7 +3,7 @@
     <div class="img-container">
       <img @click="onAlbumClick()" :src="album.cover_medium">
     </div>
-    <span class="album-caption">{{album.title}}</span>
+    <div class="album-caption">{{album.title}}</div>
   </div>
 </template>
 <script>
@@ -25,13 +25,20 @@ export default {
 </script>
 <style scoped>
 .album-caption {
-  display: block;
-  color: white;
+  text-align:center;
   font-size: 15px;
   color: aqua;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width:200px;
 }
-.img-container:hover {
+img:hover {
    cursor: pointer;
+}
+img {
+  width: 200px;
+  height: 200px;
 }
 </style>
 

@@ -17,35 +17,45 @@
         >{{artist.artist.name}}</div>
       </div>
     </div>
+    <div v-if="!isArtistFound" class="no-results-txt" >No results found</div>
   </div>
 </template>
 <script>
-import { searchEventBus } from '../main.js';
+import { searchEventBus } from "../main.js";
+import { debounce } from "../utils/utils.js";
 export default {
   data: function() {
     return {
       searchQuery: "",
       artists: [],
-      isArtistSelected: false
+      isArtistSelected: false,
+      isArtistFound: true
     };
   },
   methods: {
-    onChange() {
-      console.log(process.env.ROOT_API );
-      console.log(this.searchQuery);
+    onChange: debounce(function() {
+      this.isArtistFound = true;
+      this.getArtistDetails();
+    }, 200),
+
+    getArtistDetails() {
       this.fetchArtists(this.searchQuery)
         .then(
           response => {
             return response.json();
           },
           error => {
-            // error handleing code goes here
             console.log(error);
           }
         )
         .then(results => {
           this.isArtistSelected = false;
           this.artists = results.data;
+          this.isArtistAvailble();
+        })
+        .catch((e) => {
+          // do server error handling here
+          console.log("Caught", e);
         });
     },
 
@@ -66,6 +76,14 @@ export default {
       if (!this.$el.contains(evt.target)) {
         this.isArtistSelected = true;
       }
+    },
+
+    isArtistAvailble(searchResults) {
+      if (this.artists.length == 0) {
+        this.isArtistFound = false;
+      } else {
+        this.isArtistFound = true;
+      }
     }
   },
   mounted() {
@@ -78,7 +96,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .autocomplete {
   position: relative;
   display: inline-block;
@@ -98,6 +115,11 @@ input[type="text"] {
 input[type="submit"] {
   color: #000;
   background: aqua;
+}
+.no-results-txt {
+  color: white;
+  font-size: 1.2rem;
+  padding: 1rem;
 }
 .autocomplete-items {
   position: absolute;
