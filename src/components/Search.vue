@@ -22,7 +22,7 @@
 </template>
 <script>
 import { searchEventBus } from "../main.js";
-import { debounce } from "../utils/utils.js";
+import { debounce } from "debounce";
 export default {
   data: function() {
     return {
