@@ -91,7 +91,6 @@ export default {
     }
   },
   mounted() {
-    console.log("yeah");
     document.addEventListener("click", this.handleClickOutSide);
   },
   destroyed() {
