@@ -72,7 +72,7 @@ export default {
 <style scoped>
 .album-detail-container {
     display: grid;
-    grid-template-columns: 250px auto;
+    grid-template-columns: 200px auto;
     grid-column-gap: 10px;
     background: #2a2a2a;
     font-size:16px;
@@ -120,5 +120,9 @@ tr {
 }
 tr:last-child {
   border-bottom: none;
+}
+img {
+  width: 200px;
+  height: 200px;
 }
 </style>
