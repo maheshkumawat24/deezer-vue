@@ -1,23 +1,27 @@
 <template>
-  <div class="autocomplete">
-    <input
-      type="text"
-      name="artists"
-      v-model="searchQuery"
-      @input="onChange"
-      placeholder="search artists"
-    >
-    <div v-if="!isArtistSelected">
-      <div class="autocomplete-items">
-        <div
-          class="search-items"
-          @click="onArtistClick(artist)"
-          v-for="artist in artists"
-          v-bind:key="artist.id"
-        >{{artist.artist.name}}</div>
+  <div>
+    <div class="autocomplete">
+      <input
+        type="text"
+        name="artists"
+        v-model="searchQuery"
+        @input="onChange"
+        v-on:keyup.enter="onChange"
+        placeholder="search artists"
+      >
+      <div v-if="!isArtistSelected">
+        <div class="autocomplete-items">
+          <div
+            class="search-items"
+            @click="onArtistClick(artist)"
+            v-for="artist in artists"
+            v-bind:key="artist.id"
+          >{{artist.artist.name}}</div>
+        </div>
       </div>
     </div>
-    <div v-if="!isArtistFound" class="no-results-txt" >No results found</div>
+    <input type="submit" @click="onChange">
+    <div v-if="!isArtistFound" class="no-results-txt">No results found</div>
   </div>
 </template>
 <script>
@@ -53,7 +57,7 @@ export default {
           this.artists = results.data;
           this.isArtistAvailble();
         })
-        .catch((e) => {
+        .catch(e => {
           // do server error handling here
           console.log("Caught", e);
         });
